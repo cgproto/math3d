@@ -793,13 +793,17 @@ class Matrix4 {
 
 	}
 
-	makePerspective( left, right, top, bottom, near, far ) {
+	makePerspective( fov, aspect, near, far ) {
 
-		if ( far === undefined ) {
+		let top = near * Math.tan( DEG2RAD * 0.5 * fov );
+		let height = 2 * top;
+		let width = aspect * height;
+		let left = - 0.5 * width;
+		return this.makeFrustum( left, left + width, top, top - height, near, far)
 
-			console.warn( 'THREE.Matrix4: .makePerspective() has been redefined and has a new signature. Please check the docs.' );
-
-		}
+	}
+	
+	makeFrustum( left, right, top, bottom, near, far ) {
 
 		const te = this.elements;
 		const x = 2 * near / ( right - left );
