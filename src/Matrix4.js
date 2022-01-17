@@ -1,4 +1,5 @@
 import { Vector3 } from './Vector3.js';
+import { DEG2RAD } from './MathUtils.js';
 
 class Matrix4 {
 
@@ -554,6 +555,29 @@ class Matrix4 {
 		te[ 3 ] *= x; te[ 7 ] *= y; te[ 11 ] *= z;
 
 		return this;
+
+	}
+
+	translate( v ) {
+
+		_m1.makeTranslation( v.x, v.y, v.z)
+
+		return this.multiply( _m1 );
+
+	}
+
+	rotate ( v ) {
+
+		if ( v.isQuaternion ) {
+
+			_m1.makeRotationFromQuaternion( v );
+		}
+		else if ( v.isEuler ) {
+
+			_m1.makeRotationFromEuler( v );
+		}
+
+		return this.multiply( _m1 );
 
 	}
 
